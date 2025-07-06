@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 10 Richest Companies - 3D Showcase</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/supermedium/superframe@master/components/gltf-model/dist/aframe-gltf-model-component.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/supermedium/superframe@master/components/text-geometry/dist/aframe-text-geometry-component.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="ui-overlay">
+        <div id="company-info">
+            <h1 id="company-name"></h1>
+            <p id="company-value"></p>
+            <p id="company-description"></p>
+            <p id="company-position"></p>
+        </div>
+        <div id="controls">
+            <button id="prev-btn" onclick="previousCompany()">← Previous</button>
+            <button id="next-btn" onclick="nextCompany()">Next →</button>
+        </div>
+        <div id="instructions">
+            <p>Navigate through the top 10 richest companies</p>
+            <p>Use mouse to look around • Use buttons to navigate</p>
+        </div>
+    </div>
+
+    <a-scene 
+        background="color: #001122"
+        fog="type: exponential; density: 0.05; color: #001122"
+        vr-mode-ui="enabled: false">
+        
+        <!-- Assets -->
+        <a-assets>
+            <!-- 3D Logo Models -->
+            <a-asset-item id="apple-model" src="https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models@master/2.0/DamagedHelmet/glTF/DamagedHelmet.gltf"></a-asset-item>
+            
+            <!-- Fonts for better text rendering -->
+            <a-asset-item id="font-kelsonsans" src="https://cdn.aframe.io/fonts/KelsonSans.fnt"></a-asset-item>
+            
+            <!-- Materials for 3D logos -->
+            <a-mixin id="metallic-material" material="metalness: 0.8; roughness: 0.2; transparent: false"></a-mixin>
+            <a-mixin id="glass-material" material="transparent: true; opacity: 0.9; metalness: 0.1; roughness: 0.1"></a-mixin>
+            <a-mixin id="logo-scale" scale="4 4 4"></a-mixin>
+        </a-assets>
+
+        <!-- Environment -->
+        <a-sphere 
+            position="0 0 0" 
+            radius="100" 
+            color="#000510" 
+            material="side: back; transparent: true; opacity: 0.8">
+        </a-sphere>
+
+        <!-- Lighting -->
+        <a-light 
+            type="ambient" 
+            color="#708090" 
+            intensity="0.8">
+        </a-light>
+        
+        <a-light 
+            type="directional" 
+            position="8 15 8" 
+            color="#ffffff" 
+            intensity="1.8" 
+            light="castShadow: true">
+        </a-light>
+        
+        <a-light 
+            type="directional" 
+            position="-8 15 8" 
+            color="#e6f3ff" 
+            intensity="1.2" 
+            light="castShadow: true">
+        </a-light>
+
+        <!-- Spotlight for company logo -->
+        <a-light 
+            id="spotlight" 
+            type="spot" 
+            position="0 12 5" 
+            color="#ffffff" 
+            intensity="4" 
+            light="angle: 35; penumbra: 0.1; castShadow: true" 
+            target="#company-display">
+        </a-light>
+        
+        <!-- Additional rim lighting -->
+        <a-light 
+            type="point" 
+            position="10 10 -10" 
+            color="#4da6ff" 
+            intensity="2.0">
+        </a-light>
+        
+        <a-light 
+            type="point" 
+            position="-10 10 -10" 
+            color="#ff6b6b" 
+            intensity="2.0">
+        </a-light>
+
+        <!-- Main company display area -->
+        <a-entity id="company-display" position="0 8 -15">
+            <!-- 3D Company Logo Container -->
+            <a-entity id="logo-3d-container" position="0 4 0" scale="8 8 8">
+                
+                <!-- Apple Logo - More Accurate Apple Shape -->
+                <a-entity id="apple-logo-3d" visible="true">
+                    <!-- Apple body - main sphere -->
+                    <a-sphere position="0 0 0" radius="1.0" color="#f5f5f7" 
+                             material="metalness: 0.3; roughness: 0.1; emissive: #333333; emissiveIntensity: 0.2"
+                             animation="property: rotation; to: 0 30 0; loop: true; dur: 60000; easing: linear"></a-sphere>
+                    <!-- Apple bite - more accurate cutout -->
+                    <a-sphere position="0.6 0.3 0.3" radius="0.45" color="#000510" 
+                             material="metalness: 1.0; roughness: 0.0"></a-sphere>
+                    <!-- Apple stem -->
+                    <a-cylinder position="0 1.1 0" radius="0.08" height="0.4" color="#8b4513"
+                               material="metalness: 0.3; roughness: 0.8"></a-cylinder>
+                    <!-- Apple leaf - more detailed -->
+                    <a-box position="0.2 1.3 0" width="0.3" height="0.15" depth="0.05" rotation="0 0 25" color="#228b22"
+                           material="metalness: 0.2; roughness: 0.6"></a-box>
+                            material="metalness: 0.1; roughness: 0.9"></a-box>
+                    <!-- Apple shine -->
+                    <a-sphere position="-0.3 0.4 0.7" radius="0.2" color="#ffffff" 
+                             material="transparent: true; opacity: 0.8; metalness: 0.0; roughness: 0.0"></a-sphere>
+                    <!-- Apple reflection -->
+                    <a-sphere position="0.2 0.6 0.8" radius="0.1" color="#ffffff" 
+                             material="transparent: true; opacity: 0.6; metalness: 0.0; roughness: 0.0"></a-sphere>
+                </a-entity>
+
+                <!-- Microsoft Logo - Accurate Four Windows -->
+                <a-entity id="microsoft-logo-3d" visible="false">
+                    <!-- Top Left - Red -->
+                    <a-box position="-0.55 0.55 0" width="1.0" height="1.0" depth="0.3" color="#f25022"
+                           material="metalness: 0.4; roughness: 0.15; emissive: #440f08; emissiveIntensity: 0.2"
+                           animation="property: rotation; to: 8 8 0; loop: true; dur: 50000; easing: linear"></a-box>
+                    <!-- Top Right - Green -->
+                    <a-box position="0.55 0.55 0" width="1.0" height="1.0" depth="0.3" color="#7fba00"
+                           material="metalness: 0.4; roughness: 0.15; emissive: #263b00; emissiveIntensity: 0.2"
+                           animation="property: rotation; to: 0 8 8; loop: true; dur: 50000; easing: linear"></a-box>
+                    <!-- Bottom Left - Blue -->
+                    <a-box position="-0.55 -0.55 0" width="1.0" height="1.0" depth="0.3" color="#00a4ef"
+                           material="metalness: 0.4; roughness: 0.15; emissive: #003344; emissiveIntensity: 0.2"
+                           animation="property: rotation; to: 8 0 8; loop: true; dur: 50000; easing: linear"></a-box>
+                    <!-- Bottom Right - Yellow -->
+                    <a-box position="0.55 -0.55 0" width="1.0" height="1.0" depth="0.3" color="#ffb900"
+                           material="metalness: 0.4; roughness: 0.15; emissive: #443700; emissiveIntensity: 0.2"
+                           animation="property: rotation; to: 8 8 8; loop: true; dur: 50000; easing: linear"></a-box>
+                    <!-- Center connecting element -->
+                    <a-box position="0 0 -0.2" width="0.2" height="2.2" depth="0.1" color="#ffffff"
+                           material="metalness: 0.7; roughness: 0.1; emissive: #444444; emissiveIntensity: 0.3"></a-box>
+                    <a-box position="0 0 -0.2" width="2.2" height="0.2" depth="0.1" color="#ffffff"
+                           material="metalness: 0.7; roughness: 0.1; emissive: #444444; emissiveIntensity: 0.3"></a-box>
+                </a-entity>
+
+                <!-- Google/Alphabet Logo - Accurate G Shape -->
+                <a-entity id="alphabet-logo-3d" visible="false">
+                    <!-- Main G circle -->
+                    <a-torus position="0 0 0" radius="1.0" radius-tubular="0.3" color="#4285f4"
+                            material="metalness: 0.5; roughness: 0.1; emissive: #1a2a44; emissiveIntensity: 0.25"
+                            animation="property: rotation; to: 0 22 0; loop: true; dur: 80000; easing: linear"></a-torus>
+                    <!-- G opening -->
+                    <a-box position="0.7 0 0" width="0.6" height="0.6" depth="0.6" color="#000510"
+                           material="metalness: 1.0; roughness: 0.0"></a-box>
+                    <!-- G horizontal bar -->
+                    <a-box position="0.5 -0.3 0" width="1.0" height="0.3" depth="0.6" color="#ea4335"
+                           material="metalness: 0.5; roughness: 0.1; emissive: #441511; emissiveIntensity: 0.25"></a-box>
+                    <!-- G vertical bar -->
+                    <a-box position="0.7 -0.45 0" width="0.3" height="0.6" depth="0.6" color="#fbbc04"
+                           material="metalness: 0.5; roughness: 0.1; emissive: #443501; emissiveIntensity: 0.25"></a-box>
+                    <!-- Inner G detail -->
+                    <a-cylinder position="0 0 0" radius="0.4" height="0.8" color="#34a853"
+                               material="metalness: 0.5; roughness: 0.1; transparent: true; opacity: 0.9; emissive: #0f3319; emissiveIntensity: 0.25"></a-cylinder>
+                </a-entity>
+
+                <!-- Amazon Logo - Better Arrow Smile -->
+                <a-entity id="amazon-logo-3d" visible="false">
+                    <!-- Amazon text block -->
+                    <a-text value="amazon" position="0 0.8 0" align="center" color="#ff9900" 
+                           geometry="primitive: plane; width: auto; height: auto"
+                           material="metalness: 0.7; roughness: 0.15; emissive: #442200; emissiveIntensity: 0.3"
+                           text="font: kelsonsans; width: 12; height: 1"
+                           animation="property: rotation; to: 0 180 0; loop: true; dur: 20000; easing: linear"></a-text>
+                    <!-- Arrow smile - more curved -->
+                    <a-entity position="0 -0.5 0">
+                        <a-torus position="0 0 0" radius="0.8" radius-tubular="0.12" color="#232f3e"
+                                material="metalness: 0.9; roughness: 0.1; emissive: #111111; emissiveIntensity: 0.2"
+                                rotation="0 0 10"></a-torus>
+                        <!-- Arrow point -->
+                        <a-cone position="0.7 -0.2 0" radius-bottom="0.15" radius-top="0" height="0.3" color="#232f3e"
+                               material="metalness: 0.9; roughness: 0.1; emissive: #111111; emissiveIntensity: 0.2"
+                               rotation="0 0 -30"></a-cone>
+                    </a-entity>
+                </a-entity>
+
+                <!-- Tesla Logo - More Accurate T -->
+                <a-entity id="tesla-logo-3d" visible="false">
+                    <!-- Main T vertical -->
+                    <a-cylinder position="0 0 0" radius="0.15" height="2.0" color="#cc0000"
+                               material="metalness: 0.9; roughness: 0.05; emissive: #440000; emissiveIntensity: 0.3"
+                               animation="property: rotation; to: 0 0 15; loop: true; dur: 70000; easing: linear"></a-cylinder>
+                    <!-- T horizontal bar -->
+                    <a-box position="0 0.9 0" width="1.8" height="0.25" depth="0.3" color="#cc0000"
+                           material="metalness: 0.9; roughness: 0.05; emissive: #440000; emissiveIntensity: 0.3"></a-box>
+                    <!-- Tesla top curved ends -->
+                    <a-torus position="-0.7 1.1 0" radius="0.25" radius-tubular="0.08" color="#cc0000"
+                            material="metalness: 0.9; roughness: 0.05; emissive: #440000; emissiveIntensity: 0.3"
+                            rotation="90 0 0"></a-torus>
+                    <a-torus position="0.7 1.1 0" radius="0.25" radius-tubular="0.08" color="#cc0000"
+                            material="metalness: 0.9; roughness: 0.05; emissive: #440000; emissiveIntensity: 0.3"
+                            rotation="90 0 0"></a-torus>
+                    <!-- Tesla energy lines -->
+                    <a-box position="-0.4 0 0.2" width="0.05" height="1.8" depth="0.1" color="#ffffff"
+                           material="metalness: 0.95; roughness: 0.05; emissive: #cc0000; emissiveIntensity: 0.6"></a-box>
+                    <a-box position="0.4 0 0.2" width="0.05" height="1.8" depth="0.1" color="#ffffff"
+                           material="metalness: 0.95; roughness: 0.05; emissive: #cc0000; emissiveIntensity: 0.6"></a-box>
+                </a-entity>
+
+                <!-- Meta Logo - Better Infinity Symbol -->
+                <a-entity id="meta-logo-3d" visible="false">
+                    <!-- Left loop -->
+                    <a-torus position="-0.5 0 0" radius="0.6" radius-tubular="0.25" color="#1877f2"
+                            material="metalness: 0.7; roughness: 0.15; emissive: #0a3980; emissiveIntensity: 0.3"
+                            animation="property: rotation; to: 0 180 0; loop: true; dur: 16000; easing: linear"></a-torus>
+                    <!-- Right loop -->
+                    <a-torus position="0.5 0 0" radius="0.6" radius-tubular="0.25" color="#42a5f5"
+                            material="metalness: 0.7; roughness: 0.15; emissive: #1a4480; emissiveIntensity: 0.3"
+                            animation="property: rotation; to: 0 -180 0; loop: true; dur: 16000; easing: linear"></a-torus>
+                    <!-- Center connection -->
+                    <a-cylinder position="0 0 0" radius="0.25" height="0.5" color="#1565c0"
+                               material="metalness: 0.8; roughness: 0.1; emissive: #2a5599; emissiveIntensity: 0.4"
+                               rotation="90 0 0"></a-cylinder>
+                    <!-- Meta glow effect -->
+                    <a-sphere position="0 0 0" radius="1.5" color="#1877f2"
+                             material="transparent: true; opacity: 0.15; metalness: 0.0; roughness: 1.0"></a-sphere>
+                </a-entity>
+
+                <!-- Berkshire Hathaway Logo - Corporate Building -->
+                <a-entity id="berkshire-logo-3d" visible="false">
+                    <!-- Main building structure -->
+                    <a-box position="0 0 0" width="1.2" height="2.0" depth="1.2" color="#1e3a8a"
+                           material="metalness: 0.8; roughness: 0.2; emissive: #0a1a44; emissiveIntensity: 0.2"
+                           animation="property: rotation; to: 0 180 0; loop: true; dur: 24000; easing: linear"></a-box>
+                    <!-- Building top -->
+                    <a-box position="0 1.2 0" width="1.5" height="0.4" depth="1.5" color="#3b82f6"
+                           material="metalness: 0.9; roughness: 0.1; emissive: #1a4080; emissiveIntensity: 0.3"></a-box>
+                    <!-- Corporate tower -->
+                    <a-cylinder position="0 1.8 0" radius="0.3" height="0.8" color="#1e40af"
+                               material="metalness: 0.8; roughness: 0.2; emissive: #0f2055; emissiveIntensity: 0.2"></a-cylinder>
+                    <!-- Windows pattern -->
+                    <a-box position="0 0.3 0.61" width="0.8" height="1.2" depth="0.05" color="#ffffff"
+                           material="metalness: 0.2; roughness: 0.1; transparent: true; opacity: 0.9; emissive: #cccccc; emissiveIntensity: 0.1"></a-box>
+                    <!-- BH letters -->
+                    <a-text value="BH" position="0 1.4 0.8" align="center" color="#ffffff" 
+                           text="font: kelsonsans; width: 6"
+                           material="emissive: #ffffff; emissiveIntensity: 0.3"></a-text>
+                </a-entity>
+
+                <!-- NVIDIA Logo - Better Eye/Chip Design -->
+                <a-entity id="nvidia-logo-3d" visible="false">
+                    <!-- Main eye sphere -->
+                    <a-sphere position="0 0 0" radius="1.0" color="#76b900"
+                             material="metalness: 0.9; roughness: 0.05; emissive: #2a4400; emissiveIntensity: 0.4"
+                             animation="property: rotation; to: 180 0 180; loop: true; dur: 16000; easing: linear"></a-sphere>
+                    <!-- Eye iris -->
+                    <a-ring position="0 0 1.01" radius-inner="0.4" radius-outer="0.8" color="#ffffff"
+                           material="metalness: 0.95; roughness: 0.05; emissive: #cccccc; emissiveIntensity: 0.2"></a-ring>
+                    <!-- Eye pupil -->
+                    <a-sphere position="0 0 1.1" radius="0.3" color="#000000"
+                             material="metalness: 1.0; roughness: 0.0"></a-sphere>
+                    <!-- Circuit patterns around -->
+                    <a-box position="1.2 0 0" width="0.15" height="1.5" depth="0.1" color="#76b900"
+                           material="metalness: 0.9; roughness: 0.05; emissive: #2a4400; emissiveIntensity: 0.4"></a-box>
+                    <a-box position="-1.2 0 0" width="0.15" height="1.5" depth="0.1" color="#76b900"
+                           material="metalness: 0.9; roughness: 0.05; emissive: #2a4400; emissiveIntensity: 0.4"></a-box>
+                    <a-box position="0 -1.2 0" width="1.5" height="0.15" depth="0.1" color="#76b900"
+                           material="metalness: 0.9; roughness: 0.05; emissive: #2a4400; emissiveIntensity: 0.4"></a-box>
+                    <!-- NVIDIA text -->
+                    <a-text value="NVIDIA" position="0 -1.8 0" align="center" color="#76b900" 
+                           text="font: kelsonsans; width: 8"
+                           material="emissive: #76b900; emissiveIntensity: 0.3"></a-text>
+                </a-entity>
+
+                <!-- TSMC Logo - Better Semiconductor Wafer -->
+                <a-entity id="tsmc-logo-3d" visible="false">
+                    <!-- Main wafer -->
+                    <a-cylinder position="0 0 0" radius="1.2" height="0.2" color="#ff6b35"
+                               material="metalness: 0.95; roughness: 0.02; emissive: #662200; emissiveIntensity: 0.3"
+                               animation="property: rotation; to: 0 180 0; loop: true; dur: 16000; easing: linear"></a-cylinder>
+                    <!-- Circuit patterns -->
+                    <a-ring position="0 0.11 0" radius-inner="0.3" radius-outer="0.4" color="#ffffff"
+                           material="metalness: 0.9; roughness: 0.05; emissive: #cccccc; emissiveIntensity: 0.2"></a-ring>
+                    <a-ring position="0 0.11 0" radius-inner="0.6" radius-outer="0.7" color="#ffffff"
+                           material="metalness: 0.9; roughness: 0.05; emissive: #cccccc; emissiveIntensity: 0.2"></a-ring>
+                    <a-ring position="0 0.11 0" radius-inner="0.9" radius-outer="1.0" color="#ffffff"
+                           material="metalness: 0.9; roughness: 0.05; emissive: #cccccc; emissiveIntensity: 0.2"></a-ring>
+                    <!-- Grid pattern -->
+                    <a-box position="0 0.12 0" width="2.4" height="0.02" depth="0.05" color="#ffffff"
+                           material="metalness: 0.9; roughness: 0.05; emissive: #cccccc; emissiveIntensity: 0.2"></a-box>
+                    <a-box position="0 0.12 0" width="0.05" height="0.02" depth="2.4" color="#ffffff"
+                           material="metalness: 0.9; roughness: 0.05; emissive: #cccccc; emissiveIntensity: 0.2"></a-box>
+                    <!-- Central processor -->
+                    <a-box position="0 0.15 0" width="0.5" height="0.1" depth="0.5" color="#2563eb"
+                           material="metalness: 1.0; roughness: 0.0; emissive: #1133aa; emissiveIntensity: 0.4"></a-box>
+                    <!-- TSMC text -->
+                    <a-text value="TSMC" position="0 -1.8 0" align="center" color="#ff6b35" 
+                           text="font: kelsonsans; width: 8"
+                           material="emissive: #ff6b35; emissiveIntensity: 0.3"></a-text>
+                </a-entity>
+
+                <!-- Visa Logo - Better Card/Wave Design -->
+                <a-entity id="visa-logo-3d" visible="false">
+                    <!-- Main card -->
+                    <a-box position="0 0 0" width="2.4" height="1.6" depth="0.2" color="#1a1f71"
+                           material="metalness: 0.8; roughness: 0.15; emissive: #0a1044; emissiveIntensity: 0.3"
+                           animation="property: rotation; to: 0 180 0; loop: true; dur: 20000; easing: linear"></a-box>
+                    <!-- Visa wave pattern - more accurate -->
+                    <a-cylinder position="-0.6 0 0.11" radius="0.2" height="1.2" color="#ffffff"
+                               material="metalness: 0.6; roughness: 0.2; emissive: #cccccc; emissiveIntensity: 0.2"
+                               rotation="0 0 30"></a-cylinder>
+                    <a-cylinder position="-0.1 0 0.11" radius="0.2" height="1.6" color="#ffffff"
+                               material="metalness: 0.6; roughness: 0.2; emissive: #cccccc; emissiveIntensity: 0.2"
+                               rotation="0 0 -10"></a-cylinder>
+                    <a-cylinder position="0.4 0 0.11" radius="0.2" height="1.0" color="#ffffff"
+                               material="metalness: 0.6; roughness: 0.2; emissive: #cccccc; emissiveIntensity: 0.2"
+                               rotation="0 0 45"></a-cylinder>
+                    <a-cylinder position="0.9 0 0.11" radius="0.2" height="0.6" color="#ffffff"
+                               material="metalness: 0.6; roughness: 0.2; emissive: #cccccc; emissiveIntensity: 0.2"
+                               rotation="0 0 -20"></a-cylinder>
+                    <!-- VISA text -->
+                    <a-text value="VISA" position="0 0 0.2" align="center" color="#ffffff" 
+                           text="font: kelsonsans; width: 8"
+                           material="emissive: #ffffff; emissiveIntensity: 0.4"></a-text>
+                </a-entity>
+
+            </a-entity>
+
+            <!-- Company pedestal - bigger -->
+            <a-cylinder 
+                position="0 -2 0" 
+                radius="5" 
+                height="2" 
+                color="#333366" 
+                shadow="cast: true; receive: true"
+                material="metalness: 0.7; roughness: 0.3">
+            </a-cylinder>
+
+            <!-- Information display - bigger -->
+            <a-plane 
+                id="info-board"
+                position="0 -4 0.1" 
+                width="10" 
+                height="3" 
+                color="#000033" 
+                material="opacity: 0.9"
+                shadow="receive: true">
+                <a-text 
+                    id="company-name-3d"
+                    position="0 0.8 0.01" 
+                    align="center" 
+                    color="#ffffff" 
+                    font="kelsonsans" 
+                    value="Apple Inc."
+                    width="12">
+                </a-text>
+                <a-text 
+                    id="company-value-3d"
+                    position="0 0 0.01" 
+                    align="center" 
+                    color="#00ff00" 
+                    font="kelsonsans" 
+                    value="$3.39 Trillion"
+                    width="10">
+                </a-text>
+                <a-text 
+                    id="company-rank-3d"
+                    position="0 -0.8 0.01" 
+                    align="center" 
+                    color="#ffff00" 
+                    font="kelsonsans" 
+                    value="Rank #1"
+                    width="10">
+                </a-text>
+            </a-plane>
+        </a-entity>
+
+        <!-- Decorative elements -->
+        <a-entity id="particles">
+            <!-- Floating particles -->
+            <a-sphere position="10 5 -10" radius="0.1" color="#ffffff" opacity="0.6"
+                animation="property: position; to: -10 5 -10; loop: true; dur: 15000; easing: linear"></a-sphere>
+            <a-sphere position="-8 3 -8" radius="0.08" color="#00ffff" opacity="0.5"
+                animation="property: position; to: 8 3 -8; loop: true; dur: 12000; easing: linear"></a-sphere>
+            <a-sphere position="6 7 -15" radius="0.12" color="#ff00ff" opacity="0.4"
+                animation="property: position; to: -6 7 -15; loop: true; dur: 18000; easing: linear"></a-sphere>
+        </a-entity>
+
+        <!-- Camera with controls -->
+        <a-camera 
+            id="camera"
+            position="0 6 18" 
+            look-controls="enabled: true; touchEnabled: true"
+            wasd-controls="enabled: false"
+            mouse-cursor="">
+            <a-cursor 
+                animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150"
+                animation__fusing="property: scale; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500"
+                geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+                material="color: white; shader: flat"
+                position="0 0 -1">
+            </a-cursor>
+        </a-camera>
+    </a-scene>
+
+    <script src="script.js"></script>
+</body>
+</html>

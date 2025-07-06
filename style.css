@@ -1,0 +1,343 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+    color: white;
+}
+
+/* UI Overlay */
+#ui-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Company Information Panel */
+#company-info {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 25px;
+    max-width: 400px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transform: translateY(0);
+    transition: all 0.3s ease;
+    pointer-events: auto;
+}
+
+#company-info:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+#company-name {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(45deg, #ffffff, #e0e0e0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+#company-value {
+    font-size: 20px;
+    font-weight: 600;
+    color: #00ff88;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+#company-description {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #cccccc;
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+#company-position {
+    font-size: 12px;
+    color: #888888;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 10px;
+}
+
+/* Controls */
+#controls {
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    display: flex;
+    gap: 15px;
+    pointer-events: auto;
+}
+
+#controls button {
+    background: linear-gradient(145deg, #1e3c72, #2a5298);
+    border: none;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(42, 82, 152, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+#controls button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+#controls button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(42, 82, 152, 0.6);
+    background: linear-gradient(145deg, #2a5298, #1e3c72);
+}
+
+#controls button:hover::before {
+    left: 100%;
+}
+
+#controls button:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(42, 82, 152, 0.4);
+}
+
+#prev-btn {
+    background: linear-gradient(145deg, #ff6b6b, #ee5a52);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+}
+
+#prev-btn:hover {
+    background: linear-gradient(145deg, #ee5a52, #ff6b6b);
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
+}
+
+#next-btn {
+    background: linear-gradient(145deg, #4ecdc4, #44a08d);
+    box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
+}
+
+#next-btn:hover {
+    background: linear-gradient(145deg, #44a08d, #4ecdc4);
+    box-shadow: 0 8px 25px rgba(78, 205, 196, 0.6);
+}
+
+/* Instructions */
+#instructions {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    border-radius: 10px;
+    padding: 15px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    pointer-events: auto;
+}
+
+#instructions p {
+    font-size: 12px;
+    color: #aaaaaa;
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
+}
+
+#instructions p:last-child {
+    margin-bottom: 0;
+    color: #888888;
+}
+
+/* Loading Animation */
+.loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    color: white;
+    font-size: 18px;
+}
+
+.loading::after {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #company-info {
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        max-width: none;
+        padding: 20px;
+    }
+    
+    #company-name {
+        font-size: 20px;
+    }
+    
+    #company-value {
+        font-size: 18px;
+    }
+    
+    #company-description {
+        font-size: 13px;
+    }
+    
+    #controls {
+        bottom: 20px;
+        right: 20px;
+        gap: 10px;
+    }
+    
+    #controls button {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+    
+    #instructions {
+        bottom: 20px;
+        left: 20px;
+        padding: 12px 15px;
+    }
+    
+    #instructions p {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    #company-info {
+        padding: 15px;
+    }
+    
+    #company-name {
+        font-size: 18px;
+    }
+    
+    #company-value {
+        font-size: 16px;
+    }
+    
+    #company-description {
+        font-size: 12px;
+    }
+    
+    #controls {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    #controls button {
+        padding: 10px 18px;
+        font-size: 13px;
+    }
+}
+
+/* VR/AR specific styles */
+@media (display-mode: fullscreen) {
+    #ui-overlay {
+        display: none;
+    }
+}
+
+/* Performance optimizations */
+.gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform, opacity;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    #company-info {
+        background: rgba(0, 0, 0, 0.95);
+        border: 2px solid white;
+    }
+    
+    #controls button {
+        border: 2px solid white;
+    }
+}
+
+/* Focus indicators for accessibility */
+button:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+}
+
+/* Custom scrollbar for overflow content */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
